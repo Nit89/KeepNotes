@@ -19,7 +19,7 @@ class _SideMenuState extends State<SideMenu> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 25, vertical: 11),
+                  margin: EdgeInsets.symmetric(horizontal: 25, vertical: 12),
                   child: Text(
                     "Google Keep",
                     style: TextStyle(
