@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:keep_notes/NoteView.dart';
 import 'package:keep_notes/color.dart';
 import 'package:keep_notes/sideMenuBar.dart';
 
@@ -141,27 +142,42 @@ class _homeState extends State<home> {
                   crossAxisSpacing: 12,
                   crossAxisCount: 4,
                   staggeredTileBuilder: (index) => StaggeredTile.fit(2),
-                  itemBuilder: (context, index) => Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: white.withOpacity(0.4)),
-                        borderRadius: BorderRadius.circular(7)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          " heading",
-                          style: TextStyle(
-                              color: white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(index.isEven ? note : note1,
-                            style: TextStyle(color: white))
-                      ],
+                  itemBuilder: (context, index) => InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => NoteView()));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: index.isEven ? Colors.green[900] : Colors.blue,
+                          border: Border.all(
+                              color: index.isEven
+                                  ? Colors.green.withOpacity(0.4)
+                                  : Colors.blue.withOpacity(0.4)),
+                          borderRadius: BorderRadius.circular(7)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            " heading",
+                            style: TextStyle(
+                                color: white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                              index.isEven
+                                  ? note.length > 250
+                                      ? "${note.substring(0, 250)}..."
+                                      : note
+                                  : note1,
+                              style: TextStyle(color: white))
+                        ],
+                      ),
                     ),
                   ),
                 ),
