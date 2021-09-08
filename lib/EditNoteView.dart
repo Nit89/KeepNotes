@@ -25,8 +25,51 @@ class _EditNoteViewState extends State<EditNoteView> {
         ],
       ),
       body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: Column(
-          children: [Text("data"), Text("df")],
+          children: [
+            TextField(
+              cursorColor: white,
+              style: TextStyle(fontSize: 25, color: Colors.white),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                hintText: "TITLE",
+                hintStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey.withOpacity(0.8),
+                ),
+              ),
+            ),
+            Container(
+              height: 300,
+              child: TextField(
+                keyboardType: TextInputType.multiline,
+                minLines: 50,
+                maxLines: null,
+                cursorColor: white,
+                style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  hintText: "Note",
+                  hintStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.withOpacity(0.8),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
