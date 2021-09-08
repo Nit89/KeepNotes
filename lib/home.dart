@@ -27,7 +27,7 @@ class _homeState extends State<home> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         splashColor: bgcolor,
-        child: Icon(Icons.add, size: 40.0),
+        child: Icon(Icons.add, size: 41.0),
         backgroundColor: cardcolor,
         onPressed: () {
           Navigator.push(
