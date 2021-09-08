@@ -20,9 +20,8 @@ class Archive extends StatefulWidget {
 // ignore: camel_case_types
 class _ArchiveState extends State<Archive> {
   GlobalKey<ScaffoldState> _drawKey = GlobalKey();
-  String note =
-      "THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE";
-  String note1 = "THIS IS NOTE THIS IS NOTE THIS IS NOTE E ";
+  String note = "ARCHIVE ARCHIVE ARCHIVE";
+  String note1 = "ARCHIVE ";
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +83,7 @@ class _ArchiveState extends State<Archive> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Search your notes",
+                                      "Search your Archive notes ",
                                       style: TextStyle(
                                           color: white.withOpacity(0.5),
                                           fontSize: 16),
