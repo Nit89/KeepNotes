@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keep_notes/color.dart';
+import 'package:keep_notes/setting.dart';
 
 class SideMenu extends StatefulWidget {
   SideMenu({Key? key}) : super(key: key);
@@ -37,7 +39,43 @@ class _SideMenuState extends State<SideMenu> {
               SizedBox(
                 height: 7,
               ),
-              sectionSetting()
+              Container(
+                margin: EdgeInsets.only(right: 10),
+                child: TextButton(
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(50),
+                                  bottomRight: Radius.circular(50))))),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Settings()));
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.settings_outlined,
+                          size: 25,
+                          color: white.withOpacity(0.7),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          "Settings",
+                          style: TextStyle(
+                            color: white.withOpacity(0.7),
+                            fontSize: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -110,43 +148,6 @@ Widget sectionTwo() {
             ),
             Text(
               "Archive",
-              style: TextStyle(
-                color: white.withOpacity(0.7),
-                fontSize: 18,
-              ),
-            )
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-Widget sectionSetting() {
-  return Container(
-    margin: EdgeInsets.only(right: 10),
-    child: TextButton(
-      style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(50),
-                      bottomRight: Radius.circular(50))))),
-      onPressed: () {},
-      child: Container(
-        padding: EdgeInsets.all(5),
-        child: Row(
-          children: [
-            Icon(
-              Icons.settings_outlined,
-              size: 25,
-              color: white.withOpacity(0.7),
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            Text(
-              "Settings",
               style: TextStyle(
                 color: white.withOpacity(0.7),
                 fontSize: 18,

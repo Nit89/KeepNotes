@@ -10,15 +10,15 @@ import 'package:keep_notes/createNoteview.dart';
 import 'package:keep_notes/sideMenuBar.dart';
 
 // ignore: camel_case_types
-class home extends StatefulWidget {
-  const home({Key? key}) : super(key: key);
+class Archive extends StatefulWidget {
+  const Archive({Key? key}) : super(key: key);
 
   @override
-  _homeState createState() => _homeState();
+  _ArchiveState createState() => _ArchiveState();
 }
 
 // ignore: camel_case_types
-class _homeState extends State<home> {
+class _ArchiveState extends State<Archive> {
   GlobalKey<ScaffoldState> _drawKey = GlobalKey();
   String note =
       "THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE";
