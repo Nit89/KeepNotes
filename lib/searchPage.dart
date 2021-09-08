@@ -17,14 +17,17 @@ class _searchPageState extends State<searchPage> {
         child: Row(
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               icon: Icon(
-                Icons.search,
+                Icons.arrow_back_outlined,
                 color: Colors.white,
               ),
             ),
             Expanded(
               child: TextField(
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
