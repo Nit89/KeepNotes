@@ -19,6 +19,7 @@ class _SettingsState extends State<Settings> {
         title: Text("Settings"),
       ),
       body: Container(
+        padding: EdgeInsets.all(20),
         child: Column(
           children: [
             Row(

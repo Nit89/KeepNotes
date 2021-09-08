@@ -7,6 +7,7 @@ import 'package:keep_notes/EditNoteView.dart';
 import 'package:keep_notes/NoteView.dart';
 import 'package:keep_notes/color.dart';
 import 'package:keep_notes/createNoteview.dart';
+import 'package:keep_notes/searchPage.dart';
 import 'package:keep_notes/sideMenuBar.dart';
 
 // ignore: camel_case_types
@@ -76,20 +77,29 @@ class _homeState extends State<home> {
                           ),
                           SizedBox(width: 16),
                           Expanded(
-                            child: Container(
-                              height: 55,
-                              width: 200,
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Search your notes",
-                                      style: TextStyle(
-                                          color: white.withOpacity(0.5),
-                                          fontSize: 16),
-                                    ),
-                                  ]),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => searchPage()));
+                              },
+                              child: Container(
+                                height: 55,
+                                width: 200,
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Search your notes",
+                                        style: TextStyle(
+                                            color: white.withOpacity(0.5),
+                                            fontSize: 16),
+                                      ),
+                                    ]),
+                              ),
                             ),
                           )
                         ],
