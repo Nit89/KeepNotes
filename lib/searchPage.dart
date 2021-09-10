@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:keep_notes/color.dart';
 
+// ignore: camel_case_types
 class searchPage extends StatefulWidget {
   searchPage({Key? key}) : super(key: key);
 
@@ -8,6 +9,7 @@ class searchPage extends StatefulWidget {
   _searchPageState createState() => _searchPageState();
 }
 
+// ignore: camel_case_types
 class _searchPageState extends State<searchPage> {
   @override
   Widget build(BuildContext context) {
