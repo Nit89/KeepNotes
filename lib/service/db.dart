@@ -71,4 +71,11 @@ class NotesDatabase {
     await db!.update(NotesImpNames.TableName, note.toJson(),
         where: '${NotesImpNames.id} = ?', whereArgs: [note.id]);
   }
+
+  Future delteNote(Note note) async {
+    final db = await instance.database;
+
+    await db!.delete(NotesImpNames.TableName,
+        where: '${NotesImpNames.id}= ?', whereArgs: [note.id]);
+  }
 }
