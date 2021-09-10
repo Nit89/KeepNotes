@@ -22,7 +22,26 @@ class NotesDatabase {
 
   Future _createDB(Database db, int version) async {
     await db.execute('''
+    CREATE TABLE Notes(
+      id INTEGER PRIMARY KEY AUTOINCREMENT;
+      Pin BOLLEAN NOT NULL,
+      title TEXT NOT NULL,
+      content TEXT NOT NULL,
+      createdTime TEXT NOT NULL,
+      
+    )
     
     ''');
+  }
+
+  Future<bool?> insertEntry() async {
+    final db = await instanse.database;
+    await db!.insert("Notes", {
+      "pin": false,
+      "title": " this",
+      "content": "this is content",
+      "createdTime": "12 aug"
+    });
+    return true;
   }
 }
