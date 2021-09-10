@@ -8,6 +8,7 @@ import 'package:keep_notes/NoteView.dart';
 import 'package:keep_notes/color.dart';
 import 'package:keep_notes/createNoteview.dart';
 import 'package:keep_notes/searchPage.dart';
+import 'package:keep_notes/service/db.dart';
 import 'package:keep_notes/sideMenuBar.dart';
 
 // ignore: camel_case_types
@@ -24,6 +25,29 @@ class _homeState extends State<home> {
   String note =
       "THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE";
   String note1 = "THIS IS NOTE THIS IS NOTE THIS IS NOTE E ";
+  void initState() {
+    super.initState();
+    createEntry();
+    getAllNotes();
+    getOneNotes();
+    updateOneNotes();
+  }
+
+  Future createEntry() async {
+    await NotesDatabase.instance.insertEntry();
+  }
+
+  Future getAllNotes() async {
+    await NotesDatabase.instance.readAllNotes();
+  }
+
+  Future getOneNotes() async {
+    await NotesDatabase.instance.readOneNote(78);
+  }
+
+  Future updateOneNotes() async {
+    await NotesDatabase.instance.updateNote(note);
+  }
 
   @override
   Widget build(BuildContext context) {
