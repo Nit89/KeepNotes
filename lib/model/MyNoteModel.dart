@@ -4,6 +4,7 @@ class NotesImpNames {
   static final String title = "title";
   static final String content = "content";
   static final String createdTime = "createdTime";
+  // ignore: non_constant_identifier_names
   static final String TableName = "Notes";
   static final List<String> values = [id, pin, title, content, createdTime];
 }

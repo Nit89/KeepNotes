@@ -7,6 +7,7 @@ import 'package:keep_notes/EditNoteView.dart';
 import 'package:keep_notes/NoteView.dart';
 import 'package:keep_notes/color.dart';
 import 'package:keep_notes/createNoteview.dart';
+import 'package:keep_notes/model/MyNoteModel.dart';
 import 'package:keep_notes/searchPage.dart';
 import 'package:keep_notes/service/db.dart';
 import 'package:keep_notes/sideMenuBar.dart';
@@ -27,26 +28,26 @@ class _homeState extends State<home> {
   String note1 = "THIS IS NOTE THIS IS NOTE THIS IS NOTE E ";
   void initState() {
     super.initState();
-    createEntry();
-    getAllNotes();
-    getOneNotes();
-    updateOneNotes();
   }
 
-  Future createEntry() async {
-    await NotesDatabase.instance.insertEntry();
+  Future createEntry(Note note) async {
+    await NotesDatabase.instance.insertEntry(note);
   }
 
   Future getAllNotes() async {
     await NotesDatabase.instance.readAllNotes();
   }
 
-  Future getOneNotes() async {
-    await NotesDatabase.instance.readOneNote(78);
+  Future getOneNotes(int id) async {
+    await NotesDatabase.instance.readOneNote(id);
   }
 
-  Future updateOneNotes() async {
+  Future updateOneNotes(Note note) async {
     await NotesDatabase.instance.updateNote(note);
+  }
+
+  Future deleteNote(Note note) async {
+    await NotesDatabase.instance.delteNote(note);
   }
 
   @override

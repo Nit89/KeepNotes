@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:flutter/cupertino.dart';
+import 'package:keep_notes/model/MyNoteModel.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -21,38 +22,38 @@ class NotesDatabase {
   }
 
   Future _createDB(Database db, int version) async {
+    final idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
+    final boolType = ' BOOLEAN NOT NULL';
+    final textType = 'TEXT NOT NULL';
     await db.execute('''
     CREATE TABLE Notes(
-      id INTEGER PRIMARY KEY AUTOINCREMENT;
-      Pin BOOLEAN NOT NULL,
-      title TEXT NOT NULL,
-      content TEXT NOT NULL,
-      createdTime TEXT NOT NULL,
+      ${NotesImpNames.id} $idType,
+      ${NotesImpNames.pin} $boolType,
+      ${NotesImpNames.title} $textType,
+      ${NotesImpNames.content} $textType,
+      ${NotesImpNames.createdTime} $textType
       
     )
     
     ''');
   }
 
-  Future<bool?> insertEntry() async {
+  Future<Note?> insertEntry(Note note) async {
     final db = await instance.database;
-    await db!.insert("Notes", {
-      "pin": 0,
-      "title": " this",
-      "content": "this is content",
-      "createdTime": "12 aug"
-    });
+    final id = await db!.insert(NotesImpNames.TableName, note.toJson());
+    return note.copy(id: id);
   }
 
-  Future<String> readAllNotes() async {
+  Future<List<Note>> readAllNotes() async {
     final db = await instance.database;
-    final orderBy = 'createdTime ASC';
-    final query_result = await db!.query("NOTES");
-    print(query_result);
-    return "SUCESS";
+    final orderBy = '${NotesImpNames.createdTime} ASC';
+    // ignore: non_constant_identifier_names
+    final query_result =
+        await db!.query(NotesImpNames.TableName, orderBy: orderBy);
+    return query_result.map((json) => Note.fromJson(json)).toList();
   }
 
-  Future<String> readOneNote(int id) async {
+  Future<Note?> readOneNote(int id) async {
     final db = await instance.database;
     final map = await db!.query(NotesImpNames.TableName,
         columns: NotesImpNames.values,
@@ -77,5 +78,10 @@ class NotesDatabase {
 
     await db!.delete(NotesImpNames.TableName,
         where: '${NotesImpNames.id}= ?', whereArgs: [note.id]);
+  }
+
+  Future closeDB() async {
+    final db = await instance.database;
+    db!.close();
   }
 }
