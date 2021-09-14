@@ -13,21 +13,28 @@ class searchPage extends StatefulWidget {
   _searchPageState createState() => _searchPageState();
 }
 
+// ignore: camel_case_types
 class _searchPageState extends State<searchPage> {
+  // ignore: non_constant_identifier_names
   List<int> SearchResultIDs = [];
+  // ignore: non_constant_identifier_names
   List<Note?> SearchResultNotes = [];
 
   bool isLoading = false;
 
+  // ignore: non_constant_identifier_names
   void SearchResults(String query) async {
     SearchResultNotes.clear();
     setState(() {
       isLoading = true;
     });
+    // ignore: non_constant_identifier_names
     final ResultIds =
         await NotesDatabse.instance.getNoteString(query); //= [1,2,3,4,5]
+    // ignore: non_constant_identifier_names
     List<Note?> SearchResultNotesLocal = []; //[nOTE1, nOTE2]
     ResultIds.forEach((element) async {
+      // ignore: non_constant_identifier_names
       final SearchNote = await NotesDatabse.instance.readOneNote(element);
       SearchResultNotesLocal.add(SearchNote);
       setState(() {
@@ -95,6 +102,7 @@ class _searchPageState extends State<searchPage> {
         ));
   }
 
+  // ignore: non_constant_identifier_names
   Widget NoteSectionAll() {
     return Container(
         child: Column(

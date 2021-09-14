@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:keep_notes/NoteView.dart';
 import 'package:keep_notes/color.dart';
 import 'package:keep_notes/home.dart';
@@ -7,6 +8,7 @@ import 'package:keep_notes/service/db.dart';
 
 // ignore: must_be_immutable
 
+// ignore: must_be_immutable
 class EditNoteView extends StatefulWidget {
   Note? note;
   EditNoteView({required this.note});
@@ -16,11 +18,14 @@ class EditNoteView extends StatefulWidget {
 }
 
 class _EditNoteViewState extends State<EditNoteView> {
+  // ignore: non_constant_identifier_names
   late String NewTitle;
+  // ignore: non_constant_identifier_names
   late String NewNoteDet;
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     this.NewTitle = widget.note!.title.toString();

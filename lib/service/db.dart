@@ -48,6 +48,7 @@ class NotesDatabse {
   Future<List<Note>> readAllNotes() async {
     final db = await instance.database;
     final orderBy = '${NotesImpNames.createdTime} ASC';
+    // ignore: non_constant_identifier_names
     final query_result =
         await db!.query(NotesImpNames.TableName, orderBy: orderBy);
     return query_result.map((json) => Note.fromJson(json)).toList();

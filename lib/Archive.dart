@@ -134,6 +134,7 @@ class _ArchiveViewState extends State<ArchiveView> {
         )));
   }
 
+  // ignore: non_constant_identifier_names
   Widget NoteSectionAll() {
     return Container(
         child: Column(
@@ -202,6 +203,7 @@ class _ArchiveViewState extends State<ArchiveView> {
     ));
   }
 
+  // ignore: non_constant_identifier_names
   Widget NotesListSection() {
     return Container(
         child: Column(
