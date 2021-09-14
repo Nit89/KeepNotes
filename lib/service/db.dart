@@ -1,6 +1,7 @@
 // ignore: unused_import
 import 'package:flutter/cupertino.dart';
 import 'package:keep_notes/model/MyNoteModel.dart';
+import 'package:keep_notes/service/firestore_db.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -42,6 +43,7 @@ class NotesDatabse {
   Future<Note?> insertEntry(Note note) async {
     final db = await instance.database;
     final id = await db!.insert(NotesImpNames.TableName, note.toJson());
+    await FireDB().createNewNoteFirestore(note, id.toString());
     return note.copy(id: id);
   }
 
@@ -68,6 +70,7 @@ class NotesDatabse {
   }
 
   Future updateNote(Note note) async {
+    await FireDB().updateNoteFirestore(note);
     final db = await instance.database;
 
     await db!.update(NotesImpNames.TableName, note.toJson(),
@@ -105,10 +108,11 @@ class NotesDatabse {
   }
 
   Future delteNote(Note? note) async {
+    await FireDB().deleteNoteFirestore(note!);
     final db = await instance.database;
 
     await db!.delete(NotesImpNames.TableName,
-        where: '${NotesImpNames.id}= ?', whereArgs: [note!.id]);
+        where: '${NotesImpNames.id}= ?', whereArgs: [note.id]);
   }
 
   Future closeDB() async {
