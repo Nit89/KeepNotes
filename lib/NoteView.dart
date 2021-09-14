@@ -1,52 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:keep_notes/EditNoteView.dart';
 import 'package:keep_notes/color.dart';
+import 'package:keep_notes/home.dart';
 // ignore: unused_import
 import 'package:keep_notes/model/MyNoteModel.dart';
+import 'package:keep_notes/service/db.dart';
 
+// ignore: must_be_immutable
 class NoteView extends StatefulWidget {
+  Note? note;
+  NoteView({required this.note});
+
   @override
   _NoteViewState createState() => _NoteViewState();
 }
 
 class _NoteViewState extends State<NoteView> {
-  String note =
-      "THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgcolor,
+      backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: bgcolor,
+        backgroundColor: bgColor,
         elevation: 0.0,
         actions: [
           IconButton(
-              splashColor: Colors.blue,
-              splashRadius: 20,
-              onPressed: () {},
-              icon: Icon(Icons.push_pin_outlined)),
+              splashRadius: 17,
+              onPressed: () async {
+                await NotesDatabse.instance.pinNote(widget.note);
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => Home()));
+              },
+              icon: Icon(
+                  widget.note!.pin ? Icons.push_pin : Icons.push_pin_outlined)),
           IconButton(
-              splashColor: Colors.blue,
-              splashRadius: 20,
-              onPressed: () {},
-              icon: Icon(Icons.archive_outlined)),
+              splashRadius: 17,
+              onPressed: () async {
+                await NotesDatabse.instance.archNote(widget.note);
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => Home()));
+              },
+              icon: Icon(widget.note!.isArchieve
+                  ? Icons.archive
+                  : Icons.archive_outlined)),
           IconButton(
-              splashColor: Colors.blue,
-              splashRadius: 20,
+              splashRadius: 17,
+              onPressed: () async {
+                await NotesDatabse.instance.delteNote(widget.note);
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => Home()));
+              },
+              icon: Icon(Icons.delete_forever_outlined)),
+          IconButton(
+              splashRadius: 17,
               onPressed: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => EditNoteView(note: widget.note)));
               },
-              icon: Icon(Icons.edit_outlined)),
+              icon: Icon(Icons.edit_outlined))
         ],
       ),
       body: Container(
         padding: EdgeInsets.all(15),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            "Heading",
+            widget.note!.title,
             style: TextStyle(
                 color: Colors.white, fontSize: 23, fontWeight: FontWeight.bold),
           ),
@@ -54,9 +74,9 @@ class _NoteViewState extends State<NoteView> {
             height: 10,
           ),
           Text(
-            note,
+            widget.note!.content,
             style: TextStyle(color: Colors.white),
-          ),
+          )
         ]),
       ),
     );
