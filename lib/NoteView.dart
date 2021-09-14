@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:keep_notes/EditNoteView.dart';
 import 'package:keep_notes/color.dart';
+// ignore: unused_import
+import 'package:keep_notes/model/MyNoteModel.dart';
 
 class NoteView extends StatefulWidget {
-  NoteView({Key? key}) : super(key: key);
-
   @override
   _NoteViewState createState() => _NoteViewState();
 }
@@ -34,8 +34,10 @@ class _NoteViewState extends State<NoteView> {
               splashColor: Colors.blue,
               splashRadius: 20,
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => EditNoteView()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditNoteView(note: widget.note)));
               },
               icon: Icon(Icons.edit_outlined)),
         ],
