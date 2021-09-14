@@ -1,16 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:keep_notes/home.dart';
+import 'package:keep_notes/login.dart';
+import 'package:keep_notes/service/login_info.dart';
 
-void main() {
-  runApp(MyApp());
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
 }
 
-class MyApp extends StatelessWidget {
+class _MyAppState extends State<MyApp> {
+  bool isLogIn = false;
+
+  getLoggedInState() async {
+    await LocalDataSaver.getLogData().then((value) {
+      setState(() {
+        isLogIn = value.toString() == "null";
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getLoggedInState();
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -24,7 +42,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: isLogIn ? Login() : Home(),
     );
   }
 }
