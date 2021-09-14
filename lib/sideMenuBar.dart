@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:keep_notes/Archive.dart';
 import 'package:keep_notes/color.dart';
+// ignore: unused_import
 import 'package:keep_notes/home.dart';
 import 'package:keep_notes/setting.dart';
 
@@ -63,7 +65,10 @@ class _SideMenuState extends State<SideMenu> {
                     topRight: Radius.circular(50),
                     bottomRight: Radius.circular(50)),
               ))),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Home()));
+          },
           child: Container(
             padding: EdgeInsets.all(5),
             child: Row(
@@ -97,7 +102,10 @@ class _SideMenuState extends State<SideMenu> {
                 topRight: Radius.circular(50),
                 bottomRight: Radius.circular(50)),
           ))),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ArchiveView()));
+          },
           child: Container(
             padding: EdgeInsets.all(5),
             child: Row(
