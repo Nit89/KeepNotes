@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
             splash: Icons.note_alt_rounded,
             nextScreen: isLogIn ? Login() : Home(),
             splashTransition: SplashTransition.rotationTransition,
-            pageTransitionType: PageTransitionType.rightToLeft,
+            pageTransitionType: PageTransitionType.leftToRight,
             backgroundColor: Colors.blue));
   }
 }
