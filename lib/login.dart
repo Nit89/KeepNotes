@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:keep_notes/color.dart';
 import 'package:keep_notes/home.dart';
 import 'package:keep_notes/service/auth.dart';
+import 'package:keep_notes/service/firestore_db.dart';
 import 'package:keep_notes/service/login_info.dart';
 
 class Login extends StatefulWidget {
@@ -18,7 +20,11 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login To App"),
+        title: Text("WELCOME! Please Login",
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 25,
+                fontWeight: FontWeight.bold)),
       ),
       body: Center(
         child: Column(
@@ -31,7 +37,9 @@ class _LoginState extends State<Login> {
               LocalDataSaver.saveImg(currentUser!.photoURL.toString());
               LocalDataSaver.saveMail(currentUser.email.toString());
               LocalDataSaver.saveName(currentUser.displayName.toString());
-              //     await FireDB().getAllStoredNotes();
+              LocalDataSaver.saveSyncSet(false);
+
+              await FireDB().getAllStoredNotes();
               Navigator.pushReplacement(
                   context, MaterialPageRoute(builder: (context) => Home()));
             })

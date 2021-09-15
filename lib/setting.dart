@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keep_notes/color.dart';
+import 'package:keep_notes/service/login_info.dart';
 
 class Settings extends StatefulWidget {
   Settings({Key? key}) : super(key: key);
@@ -9,8 +10,23 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  bool value = false;
+  late bool value;
+
+  getSyncSet() async {
+    LocalDataSaver.getSyncSet().then((valueFromDb) {
+      setState(() {
+        value = valueFromDb!;
+      });
+    });
+  }
+
   @override
+  @override
+  void initState() {
+    getSyncSet();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -31,9 +47,10 @@ class _SettingsState extends State<Settings> {
                   scale: 1.3,
                   child: Switch.adaptive(
                       value: value,
-                      onChanged: (value) {
+                      onChanged: (switchvalue) {
                         setState(() {
-                          this.value = value;
+                          this.value = switchvalue;
+                          LocalDataSaver.saveSyncSet(switchvalue);
                         });
                       }),
                 )

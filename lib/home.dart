@@ -7,9 +7,12 @@ import 'package:keep_notes/EditNoteView.dart';
 import 'package:keep_notes/NoteView.dart';
 import 'package:keep_notes/color.dart';
 import 'package:keep_notes/createNoteview.dart';
+import 'package:keep_notes/login.dart';
 import 'package:keep_notes/model/MyNoteModel.dart';
 import 'package:keep_notes/searchPage.dart';
+import 'package:keep_notes/service/auth.dart';
 import 'package:keep_notes/service/db.dart';
+import 'package:keep_notes/service/login_info.dart';
 import 'package:keep_notes/sideMenuBar.dart';
 
 // ignore: camel_case_types
@@ -23,7 +26,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isLoading = true;
   late List<Note> notesList;
-
+  late String? ImgUrl;
+  bool isStaggered = true;
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   String note =
       "THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE";
@@ -31,12 +35,8 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    createEntry(Note(
-        title: "Welcome To Keep Notes",
-        content: "vfedsjgidrjtholibfc",
-        createdTime: DateTime.now(),
-        isArchieve: false,
-        pin: false));
+    LocalDataSaver.saveSyncSet(false);
+
     getAllNotes();
   }
 
@@ -45,11 +45,20 @@ class _HomeState extends State<Home> {
   }
 
   Future getAllNotes() async {
-    this.notesList = await NotesDatabse.instance.readAllNotes();
-
-    setState(() {
-      isLoading = false;
+    LocalDataSaver.getImg().then((value) {
+      if (this.mounted) {
+        setState(() {
+          ImgUrl = value;
+        });
+      }
     });
+
+    this.notesList = await NotesDatabse.instance.readAllNotes();
+    if (this.mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   Future getOneNote(int id) async {
@@ -149,7 +158,10 @@ class _HomeState extends State<Home> {
                                       },
                                       child: Container(
                                           height: 55,
-                                          width: 200,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              3,
                                           child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -161,7 +173,7 @@ class _HomeState extends State<Home> {
                                                   style: TextStyle(
                                                       color: white
                                                           .withOpacity(0.5),
-                                                      fontSize: 16),
+                                                      fontSize: 14),
                                                 )
                                               ])),
                                     )
@@ -182,7 +194,11 @@ class _HomeState extends State<Home> {
                                                 borderRadius:
                                                     BorderRadius.circular(50.0),
                                               ))),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            setState(() {
+                                              isStaggered = !isStaggered;
+                                            });
+                                          },
                                           child: Icon(
                                             Icons.grid_view,
                                             color: white,
@@ -190,16 +206,32 @@ class _HomeState extends State<Home> {
                                       SizedBox(
                                         width: 9,
                                       ),
-                                      CircleAvatar(
-                                        radius: 16,
-                                        backgroundColor: Colors.white,
+                                      GestureDetector(
+                                        onTap: () {
+                                          signOut();
+                                          LocalDataSaver.saveLoginData(false);
+
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Login()));
+                                        },
+                                        child: CircleAvatar(
+                                          onBackgroundImageError:
+                                              (Object, StackTrace) {
+                                            print("Ok");
+                                          },
+                                          radius: 16,
+                                          backgroundImage:
+                                              NetworkImage(ImgUrl.toString()),
+                                        ),
                                       )
                                     ],
                                   ),
                                 ),
                               ])),
-                      NoteSectionAll(),
-                      NotesListSection()
+                      isStaggered ? NoteSectionAll() : NotesListSection()
                     ],
                   ),
                 ),
@@ -207,7 +239,6 @@ class _HomeState extends State<Home> {
             ));
   }
 
-  // ignore: non_constant_identifier_names
   Widget NoteSectionAll() {
     return Container(
         child: Column(
@@ -278,7 +309,6 @@ class _HomeState extends State<Home> {
     ));
   }
 
-  // ignore: non_constant_identifier_names
   Widget NotesListSection() {
     return Container(
         child: Column(
@@ -289,7 +319,7 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                "LIST VIEW",
+                "ALL",
                 style: TextStyle(
                     color: white.withOpacity(0.5),
                     fontSize: 13,
@@ -306,7 +336,7 @@ class _HomeState extends State<Home> {
             child: ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: 10,
+              itemCount: notesList.length,
               itemBuilder: (context, index) => Container(
                 padding: EdgeInsets.all(10),
                 margin: EdgeInsets.only(bottom: 10),
@@ -316,7 +346,7 @@ class _HomeState extends State<Home> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("HEADING",
+                    Text(notesList[index].title,
                         style: TextStyle(
                             color: white,
                             fontSize: 20,
@@ -325,11 +355,9 @@ class _HomeState extends State<Home> {
                       height: 10,
                     ),
                     Text(
-                      index.isEven
-                          ? note.length > 250
-                              ? "${note.substring(0, 250)}..."
-                              : note
-                          : note1,
+                      notesList[index].content.length > 250
+                          ? "${notesList[index].content.substring(0, 250)}..."
+                          : notesList[index].content,
                       style: TextStyle(color: white),
                     )
                   ],

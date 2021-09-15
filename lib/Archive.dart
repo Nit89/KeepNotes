@@ -8,6 +8,10 @@ import 'package:keep_notes/EditNoteView.dart';
 import 'package:keep_notes/NoteView.dart';
 import 'package:keep_notes/color.dart';
 import 'package:keep_notes/createNoteview.dart';
+import 'package:keep_notes/model/MyNoteModel.dart';
+import 'package:keep_notes/searchPage.dart';
+import 'package:keep_notes/service/db.dart';
+import 'package:keep_notes/service/login_info.dart';
 import 'package:keep_notes/sideMenuBar.dart';
 
 // ignore: camel_case_types
@@ -20,6 +24,25 @@ class ArchiveView extends StatefulWidget {
 
 class _ArchiveViewState extends State<ArchiveView> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  late List<Note> notesList;
+  bool isLoading = true;
+  @override
+  void initState() {
+    super.initState();
+    LocalDataSaver.saveSyncSet(false);
+
+    getAllNotes();
+  }
+
+  Future getAllNotes() async {
+    this.notesList = await NotesDatabse.instance.readAllArchiveNotes();
+    if (this.mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   String note =
       "THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE";
   String note1 = "THIS IS NOTE THIS IS NOTE THIS IS NOTE";
@@ -67,67 +90,50 @@ class _ArchiveViewState extends State<ArchiveView> {
                             children: [
                               IconButton(
                                   onPressed: () {
-                                    _drawerKey.currentState!.openDrawer();
+                                    Navigator.pop(context);
                                   },
                                   icon: Icon(
-                                    Icons.menu,
+                                    Icons.arrow_back_sharp,
                                     color: white,
                                   )),
                               SizedBox(
                                 width: 16,
                               ),
-                              Container(
-                                  height: 55,
-                                  width: 200,
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Search Your Notes",
-                                          style: TextStyle(
-                                              color: white.withOpacity(0.5),
-                                              fontSize: 16),
-                                        )
-                                      ]))
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => searchPage()));
+                                },
+                                child: Container(
+                                    height: 55,
+                                    width:
+                                        MediaQuery.of(context).size.width / 3,
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Search Your Notes",
+                                            style: TextStyle(
+                                                color: white.withOpacity(0.5),
+                                                fontSize: 14),
+                                          )
+                                        ])),
+                              )
                             ],
                           ),
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 10),
                             child: Row(
-                              children: [
-                                TextButton(
-                                    style: ButtonStyle(
-                                        overlayColor:
-                                            MaterialStateColor.resolveWith(
-                                                (states) =>
-                                                    white.withOpacity(0.1)),
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50.0),
-                                        ))),
-                                    onPressed: () {},
-                                    child: Icon(
-                                      Icons.grid_view,
-                                      color: white,
-                                    )),
-                                SizedBox(
-                                  width: 9,
-                                ),
-                                CircleAvatar(
-                                  radius: 16,
-                                  backgroundColor: Colors.white,
-                                )
-                              ],
+                              children: [],
                             ),
                           ),
                         ])),
                 NoteSectionAll(),
-                NotesListSection()
               ],
             ),
           ),
@@ -162,14 +168,18 @@ class _ArchiveViewState extends State<ArchiveView> {
             child: StaggeredGridView.countBuilder(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: 10,
+                itemCount: notesList.length,
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
                 crossAxisCount: 4,
                 staggeredTileBuilder: (index) => StaggeredTile.fit(2),
                 itemBuilder: (context, index) => InkWell(
                       onTap: () {
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) => NoteView(note: note,)));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    NoteView(note: notesList[index])));
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
@@ -179,7 +189,7 @@ class _ArchiveViewState extends State<ArchiveView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("HEADING",
+                            Text(notesList[index].title,
                                 style: TextStyle(
                                     color: white,
                                     fontSize: 20,
@@ -188,11 +198,9 @@ class _ArchiveViewState extends State<ArchiveView> {
                               height: 10,
                             ),
                             Text(
-                              index.isEven
-                                  ? note.length > 250
-                                      ? "${note.substring(0, 250)}..."
-                                      : note
-                                  : note1,
+                              notesList[index].content.length > 250
+                                  ? "${notesList[index].content.substring(0, 250)}..."
+                                  : notesList[index].content,
                               style: TextStyle(color: white),
                             )
                           ],
