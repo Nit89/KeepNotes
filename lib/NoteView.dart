@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:keep_notes/EditNoteView.dart';
 import 'package:keep_notes/color.dart';
 import 'package:keep_notes/home.dart';
@@ -62,22 +63,35 @@ class _NoteViewState extends State<NoteView> {
               icon: Icon(Icons.edit_outlined))
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.all(15),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            widget.note!.title,
-            style: TextStyle(
-                color: Colors.white, fontSize: 23, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            widget.note!.content,
-            style: TextStyle(color: Colors.white),
-          )
-        ]),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Container(
+          padding: EdgeInsets.all(15),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              "Created on ${DateFormat('dd-MM-yyyy -kk:mm').format(widget.note!.createdTime)}",
+              style: TextStyle(color: Colors.white),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              widget.note!.title,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              widget.note!.content,
+              style: TextStyle(color: Colors.white),
+            )
+          ]),
+        ),
       ),
     );
   }
