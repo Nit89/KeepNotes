@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+// ignore: unused_import
 import 'package:keep_notes/color.dart';
 import 'package:keep_notes/home.dart';
 import 'package:keep_notes/service/auth.dart';
@@ -19,31 +20,66 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("WELCOME! Please Login",
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 25,
-                fontWeight: FontWeight.bold)),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SignInButton(Buttons.Google, onPressed: () async {
-              await signInWithGoogle();
-              final User? currentUser = await _auth.currentUser;
-              LocalDataSaver.saveLoginData(true);
-              LocalDataSaver.saveImg(currentUser!.photoURL.toString());
-              LocalDataSaver.saveMail(currentUser.email.toString());
-              LocalDataSaver.saveName(currentUser.displayName.toString());
-              LocalDataSaver.saveSyncSet(false);
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+          child: Column(
+            // even space distribution
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Text(
+                    "Welcome",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Create and Customize Your Daily Notes",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: 15,
+                    ),
+                  ),
+                  SizedBox(height: 60),
+                  Container(
+                    child: Image.asset('lib/assets/note.png'),
+                  ),
+                  SizedBox(height: 40),
+                  Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SignInButton(Buttons.Google, onPressed: () async {
+                          await signInWithGoogle();
+                          // ignore: await_only_futures
+                          final User? currentUser = await _auth.currentUser;
+                          LocalDataSaver.saveLoginData(true);
+                          LocalDataSaver.saveImg(
+                              currentUser!.photoURL.toString());
+                          LocalDataSaver.saveMail(currentUser.email.toString());
+                          LocalDataSaver.saveName(
+                              currentUser.displayName.toString());
+                          LocalDataSaver.saveSyncSet(false);
 
-              await FireDB().getAllStoredNotes();
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => Home()));
-            })
-          ],
+                          await FireDB().getAllStoredNotes();
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) => Home()));
+                        })
+                      ],
+                    ),
+                  )
+                ],
+              ), //  Container(child: Image.asset('lib/assets/note.png'), ),
+            ],
+          ),
         ),
       ),
     );

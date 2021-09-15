@@ -40,11 +40,11 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Keep Notes',
         home: AnimatedSplashScreen(
-            duration: 400,
+            duration: 2500,
             splash: Icons.note_alt_rounded,
             nextScreen: isLogIn ? Login() : Home(),
             splashTransition: SplashTransition.rotationTransition,
-            pageTransitionType: PageTransitionType.leftToRight,
+            pageTransitionType: PageTransitionType.rightToLeft,
             backgroundColor: Colors.blue));
   }
 }

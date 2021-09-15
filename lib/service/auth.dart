@@ -24,8 +24,10 @@ Future<User?> signInWithGoogle() async {
 
     //CHECKING IS ON
     assert(!user!.isAnonymous);
+    // ignore: unnecessary_null_comparison
     assert(await user!.getIdToken() != null);
 
+    // ignore: await_only_futures
     final User? currentUser = await _auth.currentUser;
     assert(currentUser!.uid == user!.uid);
     print(user);

@@ -26,6 +26,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isLoading = true;
   late List<Note> notesList;
+  // ignore: non_constant_identifier_names
   late String? ImgUrl;
   bool isStaggered = true;
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
@@ -219,6 +220,7 @@ class _HomeState extends State<Home> {
                                         },
                                         child: CircleAvatar(
                                           onBackgroundImageError:
+                                              // ignore: non_constant_identifier_names
                                               (Object, StackTrace) {
                                             print("Ok");
                                           },
@@ -239,6 +241,7 @@ class _HomeState extends State<Home> {
             ));
   }
 
+  // ignore: non_constant_identifier_names
   Widget NoteSectionAll() {
     return Container(
         child: Column(
@@ -309,6 +312,7 @@ class _HomeState extends State<Home> {
     ));
   }
 
+  // ignore: non_constant_identifier_names
   Widget NotesListSection() {
     return Container(
         child: Column(
