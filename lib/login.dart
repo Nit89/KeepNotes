@@ -9,6 +9,7 @@ import 'package:keep_notes/home.dart';
 import 'package:keep_notes/service/auth.dart';
 import 'package:keep_notes/service/firestore_db.dart';
 import 'package:keep_notes/service/login_info.dart';
+import 'package:lottie/lottie.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -30,6 +31,9 @@ class _LoginState extends State<Login> {
             children: <Widget>[
               Column(
                 children: <Widget>[
+                  SizedBox(
+                    height: 5,
+                  ),
                   Text(
                     "Welcome",
                     style: TextStyle(
@@ -38,7 +42,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   Text(
                     "Create and Customize Your Daily Notes",
@@ -48,11 +52,13 @@ class _LoginState extends State<Login> {
                       fontSize: 15,
                     ),
                   ),
-                  SizedBox(height: 60),
-                  Container(
-                    child: Image.asset('lib/assets/note.png'),
-                  ),
-                  SizedBox(height: 40),
+                  SizedBox(height: 30),
+                  Lottie.network(
+                      'https://assets4.lottiefiles.com/packages/lf20_bTOdru.json'),
+                  // Container(
+                  //  child: Image.asset('lib/assets/note.png'),
+                  // ),
+                  SizedBox(height: 30),
                   Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
